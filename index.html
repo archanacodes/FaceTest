@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Signup - Banking Management System</title>
+  <link rel="stylesheet" href="signup.css">
+</head>
+<body>
+  <nav>
+    <h1>Banking Management System</h1>
+  </nav>
+  <div class="signup-container">
+    <div class="form-container">
+      <h2>Sign Up</h2>
+      <form id="signup-form">
+        <input type="text" id="username" placeholder="Username" required>
+        <input type="email" id="email" placeholder="Email (optional)">
+        <input type="password" id="password" placeholder="Password" required>
+        <input type="password" id="confirm-password" placeholder="Confirm Password" required>
+        <button type="submit">Create Account</button>
+        <p id="error-message" class="error-message"></p>
+      </form>
+      <p>Already have an account? <a href="login.html">Login</a></p>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById('signup-form').addEventListener('submit', function(event) {
+      event.preventDefault();
+
+      const username = document.getElementById('username').value;
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      const errorMessage = document.getElementById('error-message');
+
+      if (password !== confirmPassword) {
+        errorMessage.innerText = 'Passwords do not match. Please try again.';
+        return;
+      }
+
+      // Store the user data in localStorage (for simplicity)
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      if (users.some(user => user.username === username)) {
+        errorMessage.innerText = 'Username already exists. Please choose a different one.';
+        return;
+      }
+
+      users.push({ username, email, password });
+      localStorage.setItem('users', JSON.stringify(users));
+
+      // Redirect to login page after successful signup
+      window.location.href = 'login.html';
+    });
+  </script>
+
+</body>
+</html>
